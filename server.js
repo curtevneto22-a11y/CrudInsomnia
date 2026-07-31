@@ -60,6 +60,41 @@ app.delete('/users/:id', (req, res) => {
     return res.status(200).json(users);
 })
 
+app.patch("/users/:id", (req, res) => {
+    const id = Number(req.params.id);
+
+    const userIndex = users.findIndex((user) => user.id === id);
+
+    if (userIndex === -1) {
+        return res.status(404).json({
+            result: "Usuário não encontrado."
+        });
+    }
+    
+    const { nome, email, sexo, telefone } = req.body;
+
+    if (nome !== undefined) {
+        users[userIndex].nome = nome;
+    }
+
+    if (email !== undefined) {
+        users[userIndex].email = email;
+    }
+
+    if (sexo !== undefined) {
+        users[userIndex].sexo = sexo;
+    }
+
+    if (telefone !== undefined) {
+        users[userIndex].telefone = telefone;
+    }
+
+    res.status(200).json({
+        result: "Usuário atualizado com sucesso.",
+        user: users[userIndex]
+    });
+});
+
 app.listen(PORT, host, () => {
     console.log("Servidor rodando na porta: " + PORT);
 })
